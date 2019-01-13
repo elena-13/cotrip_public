@@ -1,0 +1,285 @@
+{% extends 'layout.html.twig' %}
+{% set typePage = 'index' %}
+{% block content %}
+    {% if app.user %}
+        <div id="user_active"></div>
+    {% endif %}
+        <div id="geo_url" style="display: none">{{ search.geoUrl }}</div>
+    {% include 'default/subscribe-modal.html.twig'  with { 'typePage' : typePage } %}
+    <div class="header-wrapper"
+         style="background: url({{ meta_service.getDefaultBackground() }});background-position: center;background-repeat: no-repeat;background-size: cover;">
+        {% include "header.html.twig" %}
+        <div class="header-tagline">
+            <div class="header-tagline-wrapper"
+                 style="color: {{ meta_service.getMainTextColor() }};
+                         background-color: {{ meta_service.getMainTextBackgroundColor()}};
+                         border-radius: 5px;
+                         padding: .5rem 1rem;">
+                <h1 class="header-tagline__title" style="color: {{ meta_service.getMainTextColor() }}">{{ meta_service.getMainSlogan()|raw }}</h1>
+                <p class="header-tagline__descr" style="color: {{ meta_service.getMainTextColor() }}">{{ meta_service.getMainAnnotate() }}</p>
+            </div>
+        </div>
+        <form action="{{ path('event_list') }}" method="post" id="find-form">
+        <div class="header-search">
+            <div class="header-search-wrapper all-screens"
+                 style="color: {{ meta_service.getMainTextColor() }};
+                         background-color: {{ meta_service.getMainTextBackgroundColor()}};">
+                <div class="header-search__row top-row">
+                    <div class="header-search__place text-form">
+                        <input type="text" name="meet-place"
+                               placeholder="Место сбора"
+                               value="{{ search.meetPlace.name }}">
+                        <div class="autocomplete"><ul></ul></div>
+                        <input type="hidden" name="meet-place-code">
+                    </div>
+                    <button id="search-place" type="submit" class="button button_big">Найти</button>
+                </div>
+                <div class="wrapp-rows">
+                    <div class="header-search__row first-row">
+                        <div class="select-form">
+                            <select name="route-type" class="select">
+                                <option value="">Тип мероприятия</option>
+                                {% for key, item in search.typelistByCode('route-type')  %}
+                                    <option value="{{ key }}" {% if item.checked %} selected {% endif %}>{{ item.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-form">
+                            <select name="subject" class="select">
+                                <option value="">Тематика</option>
+                                {% for key, item in search.typelistByCode('subject')  %}
+                                    <option value="{{ key }}" {% if item.checked %} selected {% endif %} >{{ item.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {#<div class="select-form">#}
+                            {#<select name="chargeable" class="select">#}
+                                {#<option value="">Платные</option>#}
+                            {#</select>#}
+                        {#</div>#}
+                        <div class="header-search__map">
+                            <a href="javascript:void(0)" class="map-search">Поиск на карте</a>
+                        </div>
+                        <div class="header-search__clean">
+                            <a href="javascript:void(0)" class="clean-filter">Очистить фильтры</a>
+                        </div>
+
+
+                    </div>
+                    <div class="header-search__row second-row">
+                        <div class="date-search">
+                            <input type="text" name="start-date" id="start-search" class="start-date" placeholder="Заезд"  readonly value="{{ search.startDate.format('d.m.Y') }}">
+                            <div class="start-date-container"></div>
+                            <i>-</i>
+                            <input type="text" name="finish-date" id="finish-search" class="finish-date" placeholder="Выезд" readonly value="{{ search.endDate.format('d.m.Y') }}">
+                            <div class="finish-date-container"></div>
+                        </div>
+                        <div class="select-form">
+                            <select name="members" class="select">
+                                <option value="">Кол-во участников</option>
+                                {% for key, item in search.typelistByCode('members')  %}
+                                    <option value="{{ key }}" {% if item.checked %} selected {% endif %}>{{ item.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="header-search__active-events">
+                            {% if search.activeEvents %}
+                                <input id="active-events" type="checkbox" name="active-events" checked class="checkbox" >
+                            {% else %}
+                                <input id="active-events" type="checkbox" name="active-events"  class="checkbox" >
+                            {% endif %}
+                            <label for="active-events"><span class="checkbox-title"><img src="/img/params/quality.svg" alt=""> проверенный организатор</span></label>
+                        </div>
+                        <div class="header-search__link-style disabled">
+                            <a href="javascript:void(0)" class="clean-filter"></a>
+                        </div>
+                        <div class="header-search__link-style">
+                            <a href="javascript:void(0)" class="clean-filter"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="header-search-wrapper mobile-version"
+                 style="color: {{ meta_service.getMainTextColor() }};
+                         background-color: {{ meta_service.getMainTextBackgroundColor()}};">
+                <div class="header-search__row first-row">
+                    <div class="header-search__place text-form">
+                        <input type="text"
+                               name="meet-place"
+                               placeholder="Место сбора"
+                               value="{{ search.meetPlace.name }}"
+                               autofocus>
+                        <div class="autocomplete"><ul></ul></div>
+                        <input type="hidden" name="meet-place-code">
+                    </div>
+                    <div class="date-search">
+                        <input type="text" name="start-date" id="start-search" class="start-date-mobile" placeholder="Заезд"  readonly value="{{ search.startDate.format('d.m.Y') }}">
+                        <div class="start-date-container-mobile"></div>
+                        <i>-</i>
+                        <input type="text" name="finish-date" id="finish-search" class="finish-date-mobile" placeholder="Выезд" readonly value="{{ search.endDate.format('d.m.Y') }}">
+                        <div class="finish-date-container-mobile"></div>
+                    </div>
+                </div>
+                <div class="header-search__row second-row">
+                    <div class="header-search__link-style">
+                        <a href="javascript:void(0)" class="map-search">Поиск на карте</a>
+                    </div>
+                    <button type="submit" class="button button_big">Найти</button>
+                </div>
+            </div>
+
+
+        </div>
+        </form>
+    </div>
+    <section class="routs">
+        <div class="routs__wrapp">
+            <div class="new-routs">
+                <h2 class="new-routs__title">Новые <p>мероприятия</p></h2>
+                <div class="new-routs__wrapp">
+                    {% for newItem in list.new %}
+                        <div class="card card_space-between">
+                            {% if newItem.params.free_events %}
+                                <h3 class="card-ribbon">Бесплатные мероприятия</h3>
+                            {% endif %}
+                            <a href="{{ path('event_item', { 'code' : newItem.code}) }}">
+                                <div class="card__img_big">
+                                    <img src="{{ newItem.photo }}" alt="">
+                                </div>
+                            </a>
+                            <h3 class="card__title"><a href="{{ path('event_item', { 'code' : newItem.code}) }}">{{ newItem.event_name }}</a></h3>
+                            <div class="card__descr">{{ newItem.annotate }}</div>
+                            <div class="card__bottom-wrapp">
+                                {% if not newItem.params.free_events %}
+                                    <div class="card__price">{{ newItem.price|number_format(0, '.', ' ') }}<span class="card__currency"> {{ newItem.currency }}</span></div>
+                                {% endif %}
+                                <div class="card__distance"><span class="card__measurment">{{ newItem.begin_date|localizeddate('short', 'none', app.request.locale) }}</span>
+                                    <a href="{{ path('event_item', { 'code' : newItem.code}) }}"  class="card__button"></a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="new-routs__link">
+                    Показать все
+                    <a href="{{ path('event_list') }}" class="new-routs__button"></a>
+                </div>
+            </div>
+            <div class="main-routs">
+                <div class="datepicker">
+                    <h2 class="datepicker__title"><span>Календарь</span> мероприятий</h2>
+
+                    {% set calendar = [] %}
+                    {% for item in list.calendar %}
+                        {% set calendar = calendar | merge([item.date | localizeddate('short', 'none', app.request.locale)]) %}
+                    {% endfor %}
+
+                    <div class="hidden-calendar">
+                    {% for item in calendar %}
+                        <div>{{ item }},</div>
+                    {% endfor %}
+                    </div>
+                    <div id="datepicker" class="datepicker-cards__wrapp owl-carousel">
+                        {% set flag = 1 %}
+                        {% for item in list.calendar %}
+                            {% if item.list is not empty %}
+                                {% set firstItem = item.list|first %}
+                                {% if flag == 1 %}
+                                    <a id="hash-id-{{ loop.index }}" href="#{{ firstItem.code }}" class="datepicker-card__link">
+                                        <div class="datepicker-card datepicker-card_active" data-id="{{ firstItem.code }}">
+                                            <div class="datepicker-card__events">{{ item.list|length }}</div>
+                                            <div class="datepicker-card__month">Дек</div>
+                                            <div class="datepicker-card__date">26</div>
+                                            <div class="datepicker-card__weekday">Пн</div>
+                                        </div>
+                                    </a>
+                                {% set flag = 0 %}
+                                {% else %}
+                                <a id="hash-id-{{ loop.index }}" href="#{{ firstItem.code }}" class="datepicker-card__link">
+                                    <div class="datepicker-card" data-id="{{ firstItem.code }}">
+                                        <div class="datepicker-card__events">{{ item.list|length }}</div>
+                                        <div class="datepicker-card__month">Дек</div>
+                                        <div class="datepicker-card__date">26</div>
+                                        <div class="datepicker-card__weekday">Пн</div>
+                                    </div>
+                                </a>
+                                {% endif %}
+                            {% else %}
+                                <div class="datepicker-card">
+                                    <div class="datepicker-card__events">{{ item.list|length }}</div>
+                                    <div class="datepicker-card__month">Дек</div>
+                                    <div class="datepicker-card__date">26</div>
+                                    <div class="datepicker-card__weekday">Пн</div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="main-routs-cards">
+                    <div id="routs" class="main-routs-cards__wrapp owl-carousel">
+                        {% for item in list.calendar %}
+                            {% set loopIdx = loop.index %}
+                            {% if item.list is not empty %}
+                                {% for item in item.list %}
+                                    <div class="main-routs-card" data-hash="{{ item.code }}" data-idx="hash-id-{{ loopIdx }}">
+                                        <a href="{{ path('event_item', { 'code' : item.code}) }}">
+                                        <div class="main-routs-card__img">
+                                            <img class="owl-lazy" data-src="{{ item.photo }}" alt="" >
+                                        </div>
+                                        <div class="main-routs-card__shadow"></div>
+                                        {% if item.params.free_events %}
+                                            <h3 class="card-ribbon">Бесплатные мероприятия</h3>
+                                        {% endif %}
+                                        <div class="main-routs-card__info">
+                                            <h3 class="main-routs-card__title">
+                                                <a class="main-routs-card__title" href="{{ path('event_item', { 'code' : item.code}) }}" style="color: inherit; text-decoration: none;">
+                                                    {{ item.event_name }}
+                                                </a>
+                                            </h3>
+                                            <p class="main-routs-card__descr">{{ item.annotate }}</p>
+                                            <div class="main-routs-card__bottom-wrapp">
+                                                {% if not item.params.free_events %}
+                                                    <div class="main-routs-card__price">{{ item.price|number_format(0, '.', ' ') }} <span class="main-routs-card__currency">{{ item.currency }}</span></div>
+                                                    {% else %}
+                                                    <div class="main-routs-card__price" style="visibility: hidden;width: 65px;"></div>
+                                                {% endif %}
+                                                <div class="main-routs-card__distance">
+                                                    {{ item.begin_date|localizeddate('short', 'none', app.request.locale) }}
+                                                    {#<span class="main-routs-card__measurment">км</span>#}
+                                                    <a href="{{ path('event_item', { 'code' : item.code}) }}" class="main-routs-card__button"></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="articles">
+        <ul class="articles__wrapp">
+        {% for popularItem in list.popular %}
+            <li class="article-item">
+                <div class="article">
+                    <div class="article__img">
+                        <img src="{{ popularItem.photo }}" alt="">
+                    </div>
+                    <div class="article__info">
+                        <a  href="{{ path('event_item', { 'code' : popularItem.code}) }}" style="color: inherit; text-decoration: none;"><h3 class="article__title">{{ popularItem.event_name }}</h3></a>
+                        <p class="article__content">{{ popularItem.annotate }}</p>
+                        <div class="article__date">{{ popularItem.begin_date|localizeddate('short', 'none', app.request.locale) }}</div>
+                        <a href="{{ path('event_item', { 'code' : popularItem.code}) }}" class="article__btn">Смотреть</a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+    {% include "subscrb.html.twig" with { 'is_subscribed' : list.is_subscribed } %}
+{% endblock %}

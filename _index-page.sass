@@ -1,0 +1,266 @@
+@import "bourbon"
+@import "../fonts"
+@import "../libs"
+@import "../vars"
+
+
+.header-tagline
+  display: block
+  .header-tagline-wrapper
+    margin-top: 23px
+    margin-left: 128px
+    margin-right: 128px
+    text-align: left
+    width: fit-content
+    .header-tagline__title
+      font-size: 30px
+      line-height: 42px
+      margin: 0
+      font-family: 'MullerLight',sans-serif
+      span
+        font-family: 'MullerBold',sans-serif
+    .header-tagline__descr
+      padding-top: 27px
+      font-size: 14px
+      font-family: 'MullerRegular',sans-serif
+      width: 55%
+      margin: 0
+      line-height: 23px
+
+.header-search
+  display: block
+  width: 65%
+  padding: 23px 128px 137px 128px
+.header-search-wrapper
+  background-color: rgba($default-bg, .5)
+  border-radius: 5px
+  padding: 26px 35px
+  .header-search__place
+    position: relative
+    flex: 0.95
+    margin-bottom: 10px
+  .header-search__row
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    flex-grow: 1
+    flex-wrap: wrap
+    align-items: center
+    font-size: 12px
+    .select-form
+      .select-styled
+        background-color: transparent
+        line-height: 20px
+    .header-search__active-events, .header-search__link-style
+      width: 140px
+
+.routs
+  .routs__wrapp
+    display: flex
+    flex-direction: row
+
+/*---------New Routs section---------*/
+.new-routs
+  flex-basis: 315px
+  background-color: $dark-bg
+  padding: 40px 33px
+  .new-routs__title
+    font-family: 'MullerBold', sans-serif
+    margin: 0
+    padding-top: 3px
+    font-size: 27px
+    color: #ffffff
+    p
+      margin: 0
+      font-family: 'MullerLight', sans-serif
+  .new-routs__wrapp
+    display: flex
+    flex-direction: column
+    flex-wrap: wrap
+    align-content: space-between
+    padding: 14px 0
+  .new-routs__link
+    color: $default-accent
+    padding-left: 10px
+    cursor: pointer
+    &:hover .new-routs__button
+      background-image: url('../../img/arrow-pointed.png')
+    .new-routs__button
+      width: 20px
+      height: 20px
+      background-image: url('../../img/arrow-yellow.png')
+      display: inline-block
+      background-size: cover
+      vertical-align: middle
+/*---------End New Routs section---------*/
+
+.main-routs
+  flex-grow: 5
+  background-color: $light-bg
+  padding: 40px 50px
+  width: 800px
+.datepicker
+  display: block
+  width: 100%
+  .datepicker__title
+    margin: 0
+    font-size: 27px
+    font-family: 'MullerLight', sans-serif
+    span
+      font-family: 'MullerBold', sans-serif
+  .datepicker-cards__wrapp
+    padding-right: 50px
+    .owl-nav
+      .owl-next i
+        color: $gray-font-color
+        &:hover
+          color: $default-accent
+          transition: .5s ease
+    .owl-next
+      position: absolute
+      top: 50%
+      right: 5%
+      margin-top: -10px
+
+.datepicker-card__link
+  text-decoration: none
+  color: $gray-font-color
+
+.datepicker-card.has_event
+  color: #000
+  .datepicker-card__events
+    background-color: lighten($default-accent, 20%)
+
+.datepicker-card
+  color: $gray-font-color
+  font-size: 10px
+  padding-top: 3px
+  padding-bottom: 3px
+  text-align: center
+  position: relative
+  .datepicker-card__events
+    width: 10px
+    display: block
+    margin: 0 auto
+    color: #000000
+    top: -12px
+    right: 11px
+    background-color: $default-bg
+    padding: 0 5px
+    border-radius: 3px
+    font-family: 'MullerRegular', sans-serif
+    font-size: 8px
+  .datepicker-card__date
+    font-size: 16px
+.datepicker-card_active
+  background-color: $default-accent
+  box-shadow: 0 0 1em #cccccc
+  color: #000000
+  border-radius: 3px
+
+.main-routs-cards
+  display: block
+  .main-routs-cards__wrapp
+    padding-top: 36px
+    .owl-nav
+      .owl-next i
+        color: #000000
+        text-align: center
+        background-color: $blue-bg
+        padding: 5px
+        border-radius: 3px
+        &:hover
+          background-color: darken($blue-bg, 5%)
+          transition: .5s ease
+    .owl-next
+      position: absolute
+      top: 50%
+      right: 2%
+      margin-top: -10px
+  .owl-carousel .owl-item img
+    width: initial
+.main-routs-card
+  width: 190px
+  height: 415px
+  position: relative
+  &:hover .main-routs-card__info .main-routs-card__title
+    color: $default-accent
+    transition: .5s ease
+  &:hover .main-routs-card__info .main-routs-card__bottom-wrapp .main-routs-card__distance .main-routs-card__button
+    background-image: url('../../img/arrow-pointed.png')
+  .main-routs-card__img
+    width: 190px
+    height: 415px
+    border-radius: 5px
+    overflow: hidden
+    position: relative
+    img
+      position: absolute
+      left: -65%
+      max-height: 100%
+  .main-routs-card__shadow
+    position: absolute
+    bottom: 0
+    left: 0
+    height: 100%
+    width: 100%
+    border-radius: 5px
+    box-shadow: inset 0px -200px 214px -102px rgba(0,0,0,0.79)
+  .main-routs-card__info
+    position: absolute
+    width: 90%
+    left: 0
+    bottom: 0
+    color: #ffffff
+    padding: 10px
+    .main-routs-card__title
+      font-family: 'MullerMedium', sans-serif
+      text-align: left
+      font-size: 12px
+      line-height: 16px
+      margin: 0
+    .main-routs-card__descr
+      font-size: 10px
+      font-family: 'MullerLight', sans-serif
+      margin: 0
+      padding: 10px 0
+    .main-routs-card__bottom-wrapp
+      display: flex
+      flex-direction:  row
+      justify-content: space-between
+      align-items: center
+      .main-routs-card__price
+        font-size: 14px
+        font-family: 'MullerBold', sans-serif
+      .main-routs-card__price_no-price
+        font-family: 'MullerLight', sans-serif
+        font-size: 10px
+        line-height: 10px
+        text-align: left
+        color: $blue-font-color
+        flex-grow: 0
+      .main-routs-card__distance
+        font-size: 12px
+        width: 50%
+        text-align: right
+        font-family: 'MullerMedium', sans-serif
+        .main-routs-card__button
+          width: 20px
+          height: 20px
+          margin-left: 3px
+          background-image: url('../../img/arrow-yellow.png')
+          background-size: cover
+          vertical-align: middle
+          display: inline-block
+          &:hover
+            cursor: pointer
+
+.hidden-calendar
+  display: none
+
+.main-routs-card
+  .card-ribbon
+    top: 5px
+    left: 0
+    &:after
+      content: none
